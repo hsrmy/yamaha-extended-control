@@ -1,0 +1,45 @@
+{
+  "Name": "Yamaha Extended Control Plugin",
+  "Version": "0.1.0.0",
+  "Author": "hsrmy",
+  "PropertyInspectorPath": "ui/global-settings.html",
+  "Actions": [
+    {
+      "Name": "Counter",
+      "UUID": "xyz.emradc.yamaha-extended-control.increment",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays a count, which increments by one on press.",
+      "Controllers": ["Keypad"],
+      "States": [
+        {
+          "Image": "imgs/actions/counter/key",
+          "TitleAlignment": "middle"
+        }
+      ]
+    }
+  ],
+  "Category": "Yamaha Extended Control Plugin",
+  "CategoryIcon": "imgs/plugin/category-icon",
+  "CodePath": "bin/plugin.js",
+  "Description": "Yamaha Extended Control Plugin for Stream Deck",
+  "Icon": "imgs/plugin/marketplace",
+  "SDKVersion": 3,
+  "Software": {
+    "MinimumVersion": "6.9"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "12"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Nodejs": {
+    "Version": "20",
+    "Debug": "enabled"
+  },
+  "UUID": "xyz.emradc.yamaha-extended-control"
+}
