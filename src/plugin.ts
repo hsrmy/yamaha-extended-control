@@ -1,6 +1,6 @@
 import streamDeck from "@elgato/streamdeck";
 
-import { IncrementCounter } from "./actions/increment-counter";
+import { actions } from "./actions";
 import { GlobalSettings } from "./types/settings";
 
 streamDeck.logger.setLevel("trace");
@@ -10,8 +10,5 @@ streamDeck.settings.onDidReceiveGlobalSettings((ev) => {
   streamDeck.logger.info(`Received global settings: ${ipAddress}:${port}`);
 });
 
-// Register the increment action.
-streamDeck.actions.registerAction(new IncrementCounter());
-
-// Finally, connect to the Stream Deck.
+actions.forEach((a) => streamDeck.actions.registerAction(a));
 streamDeck.connect();
