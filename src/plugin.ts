@@ -1,7 +1,9 @@
 import streamDeck from "@elgato/streamdeck";
 
-import { actions } from "./actions";
 import { GlobalSettings } from "./types/settings";
+import { SetPowerAction } from "./actions/yxc/power";
+import { SetMuteAction, SetVolumeAction } from "./actions/yxc/volume";
+import { SetInputAction } from "./actions/yxc/input";
 
 streamDeck.logger.setLevel("trace");
 
@@ -10,5 +12,9 @@ streamDeck.settings.onDidReceiveGlobalSettings((ev) => {
   streamDeck.logger.info(`Received global settings: ${ipAddress}:${port}`);
 });
 
-actions.forEach((a) => streamDeck.actions.registerAction(a));
+streamDeck.actions.registerAction(new SetPowerAction());
+streamDeck.actions.registerAction(new SetVolumeAction());
+streamDeck.actions.registerAction(new SetMuteAction());
+streamDeck.actions.registerAction(new SetInputAction());
+
 streamDeck.connect();

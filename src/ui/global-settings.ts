@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
-import type { SDPITextFieldElement } from "../types/sdpi-components";
+import type { SDPITextFieldElement } from "../types/sdpi";
 
 (window as Window).onSave = async (event: Event) => {
   event.preventDefault();

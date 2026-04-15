@@ -1,132 +1,92 @@
 import streamDeck, {
   action,
   KeyDownEvent,
+  SendToPluginEvent,
   SingletonAction,
   WillAppearEvent,
 } from "@elgato/streamdeck";
-import type { GlobalSettings } from "../../types/settings";
+
 import { getYxcEndpoint } from "./client";
-import type { PowerAction, ZoneId } from "../../types/yxc";
+import type { BaseResponse, PowerAction } from "../../types/yxc";
+import { JsonValue } from "@elgato/utils";
+import {
+  PowerActionResult,
+  PowerActionPayload,
+  ZonePayload,
+} from "../../types/sdpi";
+import { toPascalCase } from "../../libs/common";
+import { getZones } from "../../libs/yxc";
+import { PowerActionParams } from "../../types/actions";
 
-class SetPowerAction extends SingletonAction<GlobalSettings> {
-  constructor(
-    private readonly zone: ZoneId,
-    private readonly power: PowerAction,
-  ) {
-    super();
-  }
+@action({ UUID: "xyz.emradc.yamaha-extended-control.power" })
+export class SetPowerAction extends SingletonAction<PowerActionParams> {
+  override onWillAppear(ev: WillAppearEvent<PowerActionParams>): void {}
 
-  override onWillAppear(_ev: WillAppearEvent<GlobalSettings>): void {}
-
-  override async onKeyDown(_ev: KeyDownEvent<GlobalSettings>): Promise<void> {
+  override async onKeyDown(ev: KeyDownEvent<PowerActionParams>): Promise<void> {
     try {
       const endpoint = await getYxcEndpoint();
+      const zone = ev.payload.settings?.zone ?? "main";
+      const action = ev.payload.settings?.action ?? "on";
       const res = await fetch(
-        `${endpoint}/v1/${this.zone}/setPower?power=${this.power}`,
+        `${endpoint}/v1/${zone}/setPower?power=${action}`,
       );
-      const { response_code } = await res.json();
+      const { response_code } = (await res.json()) as BaseResponse;
       streamDeck.logger.info(`setPower response`, {
-        zone: this.zone,
-        action: this.power,
+        zone: zone,
+        action: action,
         response_code,
       });
       if (response_code === 0) {
-        _ev.action.showOk();
+        ev.action.showOk();
       } else {
-        _ev.action.showAlert();
+        ev.action.showAlert();
         streamDeck.logger.error(`setPower failed`, {
-          zone: this.zone,
-          action: this.power,
+          zone: zone,
+          action: action,
           response_code,
         });
       }
     } catch (error) {
-      _ev.action.showAlert();
+      ev.action.showAlert();
       streamDeck.logger.error("setPower error:", error);
+    }
+  }
+
+  override async onSendToPlugin(
+    ev: SendToPluginEvent<JsonValue, PowerActionParams>,
+  ): Promise<void> {
+    if (
+      ev.payload instanceof Object &&
+      "event" in ev.payload &&
+      ev.payload.event === "getZones"
+    ) {
+      streamDeck.ui.sendToPropertyInspector({
+        event: "getZones",
+        items: await getZones(),
+      } satisfies ZonePayload);
+    }
+
+    if (
+      ev.payload instanceof Object &&
+      "event" in ev.payload &&
+      ev.payload.event === "getActions"
+    ) {
+      streamDeck.ui.sendToPropertyInspector({
+        event: "getActions",
+        items: getActions(),
+      } satisfies PowerActionPayload);
     }
   }
 }
 
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-on-main" })
-export class PowerOnMain extends SetPowerAction {
-  constructor() {
-    super("main", "on");
-  }
-}
+const getActions = (): PowerActionResult => {
+  streamDeck.logger.info("getActions called");
+  const actions: PowerAction[] = ["on", "standby", "toggle"];
 
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-on-zone2" })
-export class PowerOnZone2 extends SetPowerAction {
-  constructor() {
-    super("zone2", "on");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-on-zone3" })
-export class PowerOnZone3 extends SetPowerAction {
-  constructor() {
-    super("zone3", "on");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-on-zone4" })
-export class PowerOnZone4 extends SetPowerAction {
-  constructor() {
-    super("zone4", "on");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-toggle-main" })
-export class PowerToggleMain extends SetPowerAction {
-  constructor() {
-    super("main", "toggle");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-toggle-zone2" })
-export class PowerToggleZone2 extends SetPowerAction {
-  constructor() {
-    super("zone2", "toggle");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-toggle-zone3" })
-export class PowerToggleZone3 extends SetPowerAction {
-  constructor() {
-    super("zone3", "toggle");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-toggle-zone4" })
-export class PowerToggleZone4 extends SetPowerAction {
-  constructor() {
-    super("zone4", "toggle");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-standby-main" })
-export class PowerStandbyMain extends SetPowerAction {
-  constructor() {
-    super("main", "standby");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-standby-zone2" })
-export class PowerStandbyZone2 extends SetPowerAction {
-  constructor() {
-    super("zone2", "standby");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-standby-zone3" })
-export class PowerStandbyZone3 extends SetPowerAction {
-  constructor() {
-    super("zone3", "standby");
-  }
-}
-
-@action({ UUID: "xyz.emradc.yamaha-extended-control.power-standby-zone4" })
-export class PowerStandbyZone4 extends SetPowerAction {
-  constructor() {
-    super("zone4", "standby");
-  }
-}
+  return actions.map((action) => {
+    return {
+      label: toPascalCase(action),
+      value: action,
+    };
+  });
+};

@@ -366,6 +366,8 @@ export interface GetAdvancedFeaturesResponse extends BaseResponse {
 // ─── Zone ─────────────────────────────────────────────────────────────────────
 export type PowerAction = "on" | "standby" | "toggle";
 
+export type VolumeAction = "up" | "down";
+
 export interface ToneControl {
   mode?: string;
   bass?: number;

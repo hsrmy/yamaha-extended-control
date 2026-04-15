@@ -5,8 +5,9 @@
   "PropertyInspectorPath": "ui/global-settings.html",
   "Actions": [
     {
-      "Name": "Power On (Main Zone)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-on-main",
+      "Name": "Power",
+      "UUID": "xyz.emradc.yamaha-extended-control.power",
+      "PropertyInspectorPath": "ui/power.html",
       "Icon": "imgs/actions/system-power-on/icon",
       "Tooltip": "Sends a power on command to the Yamaha device.",
       "Controllers": ["Keypad"],
@@ -18,144 +19,43 @@
       ]
     },
     {
-      "Name": "Power On (Zone 2)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-on-zone2",
-      "Icon": "imgs/actions/system-power-on/icon",
-      "Tooltip": "Sends a power on command to Zone 2 of the Yamaha device.",
+      "Name": "Volume",
+      "UUID": "xyz.emradc.yamaha-extended-control.volume",
+      "PropertyInspectorPath": "ui/volume.html",
+      "Icon": "imgs/actions/volume/icon",
+      "Tooltip": "Sends a volume command to the Yamaha device.",
       "Controllers": ["Keypad"],
       "States": [
         {
-          "Image": "imgs/actions/system-power-on/key",
+          "Image": "imgs/actions/volume/key",
           "TitleAlignment": "bottom"
         }
       ]
     },
     {
-      "Name": "Power On (Zone 3)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-on-zone3",
-      "Icon": "imgs/actions/system-power-on/icon",
-      "Tooltip": "Sends a power on command to Zone 3 of the Yamaha device.",
+      "Name": "Mute",
+      "UUID": "xyz.emradc.yamaha-extended-control.mute",
+      "PropertyInspectorPath": "ui/mute.html",
+      "Icon": "imgs/actions/mute/icon",
+      "Tooltip": "Sends a mute command to the Yamaha device.",
       "Controllers": ["Keypad"],
       "States": [
         {
-          "Image": "imgs/actions/system-power-on/key",
+          "Image": "imgs/actions/mute/key",
           "TitleAlignment": "bottom"
         }
       ]
     },
     {
-      "Name": "Power On (Zone 4)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-on-zone4",
-      "Icon": "imgs/actions/system-power-on/icon",
-      "Tooltip": "Sends a power on command to Zone 4 of the Yamaha device.",
+      "Name": "Input",
+      "UUID": "xyz.emradc.yamaha-extended-control.input",
+      "PropertyInspectorPath": "ui/input.html",
+      "Icon": "imgs/actions/input/icon",
+      "Tooltip": "Sends an input command to the Yamaha device.",
       "Controllers": ["Keypad"],
       "States": [
         {
-          "Image": "imgs/actions/system-power-on/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Off (Main Zone)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-standby-main",
-      "Icon": "imgs/actions/system-power-off/icon",
-      "Tooltip": "Sends a power off command to the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-off/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Off (Zone 2)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-standby-zone2",
-      "Icon": "imgs/actions/system-power-off/icon",
-      "Tooltip": "Sends a power off command to Zone 2 of the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-off/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Off (Zone 3)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-standby-zone3",
-      "Icon": "imgs/actions/system-power-off/icon",
-      "Tooltip": "Sends a power off command to Zone 3 of the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-off/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Off (Zone 4)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-standby-zone4",
-      "Icon": "imgs/actions/system-power-off/icon",
-      "Tooltip": "Sends a power off command to Zone 4 of the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-off/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Toggle (Main Zone)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-toggle-main",
-      "Icon": "imgs/actions/system-power-toggle/icon",
-      "Tooltip": "Sends a power toggle command to the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-toggle/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Toggle (Zone 2)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-toggle-zone2",
-      "Icon": "imgs/actions/system-power-toggle/icon",
-      "Tooltip": "Sends a power toggle command to Zone 2 of the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-toggle/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Toggle (Zone 3)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-toggle-zone3",
-      "Icon": "imgs/actions/system-power-toggle/icon",
-      "Tooltip": "Sends a power toggle command to Zone 3 of the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-toggle/key",
-          "TitleAlignment": "bottom"
-        }
-      ]
-    },
-    {
-      "Name": "Power Toggle (Zone 4)",
-      "UUID": "xyz.emradc.yamaha-extended-control.power-toggle-zone4",
-      "Icon": "imgs/actions/system-power-toggle/icon",
-      "Tooltip": "Sends a power toggle command to Zone 4 of the Yamaha device.",
-      "Controllers": ["Keypad"],
-      "States": [
-        {
-          "Image": "imgs/actions/system-power-toggle/key",
+          "Image": "imgs/actions/input/key",
           "TitleAlignment": "bottom"
         }
       ]
