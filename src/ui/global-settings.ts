@@ -20,7 +20,7 @@ import type { SDPITextFieldElement } from "../types/sdpi";
       port: parseInt(portField.value, 10) || 80,
     };
 
-    // 4. グローバル設定として保存
+    // グローバル設定として保存
     try {
       await client.setGlobalSettings(payload);
       console.log("Settings saved to Global Settings:", payload);

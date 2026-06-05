@@ -5,7 +5,7 @@ import { SetPowerAction } from "./actions/yxc/power";
 import { SetMuteAction, SetVolumeAction } from "./actions/yxc/volume";
 import { SetInputAction } from "./actions/yxc/input";
 
-streamDeck.logger.setLevel("trace");
+streamDeck.logger.setLevel("info");
 
 streamDeck.settings.onDidReceiveGlobalSettings((ev) => {
   const { ipAddress, port } = ev.settings as GlobalSettings;

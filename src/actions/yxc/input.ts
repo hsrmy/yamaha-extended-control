@@ -7,7 +7,8 @@ import streamDeck, {
 } from "@elgato/streamdeck";
 import { InputActionParams } from "../../types/actions";
 import { JsonValue } from "@elgato/utils";
-import { getInputs, getZones } from "../../libs/yxc";
+import { getInputs, handleGetZones } from "../../libs/yxc";
+import { isEvent } from "../../libs/common";
 import { getYxcEndpoint } from "./client";
 import { BaseResponse } from "../../types/yxc";
 
@@ -46,22 +47,9 @@ export class SetInputAction extends SingletonAction<InputActionParams> {
   override async onSendToPlugin(
     ev: SendToPluginEvent<JsonValue, InputActionParams>,
   ): Promise<void> {
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getZones"
-    ) {
-      streamDeck.ui.sendToPropertyInspector({
-        event: "getZones",
-        items: await getZones(),
-      });
-    }
+    await handleGetZones(ev.payload);
 
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getInputs"
-    ) {
+    if (isEvent(ev.payload, "getInputs")) {
       streamDeck.ui.sendToPropertyInspector({
         event: "getInputs",
         items: await getInputs(),

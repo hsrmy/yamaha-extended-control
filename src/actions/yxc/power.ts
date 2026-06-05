@@ -12,10 +12,9 @@ import { JsonValue } from "@elgato/utils";
 import {
   PowerActionResult,
   PowerActionPayload,
-  ZonePayload,
 } from "../../types/sdpi";
-import { toPascalCase } from "../../libs/common";
-import { getZones } from "../../libs/yxc";
+import { toPascalCase, isEvent } from "../../libs/common";
+import { handleGetZones } from "../../libs/yxc";
 import { PowerActionParams } from "../../types/actions";
 
 @action({ UUID: "xyz.emradc.yamaha-extended-control.power" })
@@ -55,22 +54,9 @@ export class SetPowerAction extends SingletonAction<PowerActionParams> {
   override async onSendToPlugin(
     ev: SendToPluginEvent<JsonValue, PowerActionParams>,
   ): Promise<void> {
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getZones"
-    ) {
-      streamDeck.ui.sendToPropertyInspector({
-        event: "getZones",
-        items: await getZones(),
-      } satisfies ZonePayload);
-    }
+    await handleGetZones(ev.payload);
 
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getActions"
-    ) {
+    if (isEvent(ev.payload, "getActions")) {
       streamDeck.ui.sendToPropertyInspector({
         event: "getActions",
         items: getActions(),

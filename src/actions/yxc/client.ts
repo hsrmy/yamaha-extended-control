@@ -16,7 +16,7 @@ export const getYxcEndpoint = async (): Promise<string> => {
   return `${baseUrl}/YamahaExtendedControl`;
 };
 
-const getYxcFeatutrs = async (): Promise<GetFeaturesResponse> => {
+const getYxcFeatures = async (): Promise<GetFeaturesResponse> => {
   try {
     const endpoint = await getYxcEndpoint();
     const res = await fetch(`${endpoint}/v1/system/getFeatures`);
@@ -37,7 +37,7 @@ const getYxcFeatutrs = async (): Promise<GetFeaturesResponse> => {
 
 export const getZonesFromFeatures = async (): Promise<ZoneId[]> => {
   const zones: ZoneId[] = ["main"];
-  const features = await getYxcFeatutrs();
+  const features = await getYxcFeatures();
   const zone_num = features.system?.zone_num ?? 0;
 
   for (let i = 2; i <= zone_num; i++) {
@@ -48,7 +48,7 @@ export const getZonesFromFeatures = async (): Promise<ZoneId[]> => {
 };
 
 export const getInputsFromFeatures = async (): Promise<string[]> => {
-  const features = await getYxcFeatutrs();
+  const features = await getYxcFeatures();
 
   return features.system?.input_list.map((input) => input.id) ?? [];
 };

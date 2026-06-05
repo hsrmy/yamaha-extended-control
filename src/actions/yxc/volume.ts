@@ -7,11 +7,10 @@ import streamDeck, {
 } from "@elgato/streamdeck";
 import { BaseResponse, VolumeAction } from "../../types/yxc";
 import { getYxcEndpoint } from "./client";
-import { toPascalCase } from "../../libs/common";
+import { toPascalCase, isEvent } from "../../libs/common";
 import { JsonValue } from "@elgato/utils";
-import { getZones } from "../../libs/yxc";
+import { handleGetZones } from "../../libs/yxc";
 import {
-  ZonePayload,
   VolumeActionPayload,
   VolumeActionResult,
   MuteActionResult,
@@ -29,51 +28,30 @@ export class SetVolumeAction extends SingletonAction<VolumeActionParams> {
     try {
       const endpoint = await getYxcEndpoint();
       const zone = ev.payload.settings?.zone ?? "main";
-      const action = ev.payload.settings?.action ?? "on";
+      const action = ev.payload.settings?.action ?? "up";
       const res = await fetch(
-        `${endpoint}/v1/${zone}/setPower?power=${action}`,
+        `${endpoint}/v1/${zone}/setVolume?volume=${action}`,
       );
       const { response_code } = (await res.json()) as BaseResponse;
-      streamDeck.logger.info(`setPower response`, {
-        zone: zone,
-        action: action,
-        response_code,
-      });
+      streamDeck.logger.info(`setVolume response`, { zone, action, response_code });
       if (response_code === 0) {
         ev.action.showOk();
       } else {
         ev.action.showAlert();
-        streamDeck.logger.error(`setPower failed`, {
-          zone: zone,
-          action: action,
-          response_code,
-        });
+        streamDeck.logger.error(`setVolume failed`, { zone, action, response_code });
       }
     } catch (error) {
       ev.action.showAlert();
-      streamDeck.logger.error("setPower error:", error);
+      streamDeck.logger.error("setVolume error:", error);
     }
   }
 
   override async onSendToPlugin(
     ev: SendToPluginEvent<JsonValue, VolumeActionParams>,
   ): Promise<void> {
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getZones"
-    ) {
-      streamDeck.ui.sendToPropertyInspector({
-        event: "getZones",
-        items: await getZones(),
-      } satisfies ZonePayload);
-    }
+    await handleGetZones(ev.payload);
 
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getVolumeActions"
-    ) {
+    if (isEvent(ev.payload, "getVolumeActions")) {
       streamDeck.ui.sendToPropertyInspector({
         event: "getVolumeActions",
         items: getVolumeActions(),
@@ -90,51 +68,30 @@ export class SetMuteAction extends SingletonAction<MuteActionParams> {
     try {
       const endpoint = await getYxcEndpoint();
       const zone = ev.payload.settings?.zone ?? "main";
-      const action = ev.payload.settings?.action ?? "on";
+      const action = ev.payload.settings?.action ?? true;
       const res = await fetch(
-        `${endpoint}/v1/${zone}/setPower?power=${action}`,
+        `${endpoint}/v1/${zone}/setMute?enable=${String(action)}`,
       );
       const { response_code } = (await res.json()) as BaseResponse;
-      streamDeck.logger.info(`setPower response`, {
-        zone: zone,
-        action: action,
-        response_code,
-      });
+      streamDeck.logger.info(`setMute response`, { zone, action, response_code });
       if (response_code === 0) {
         ev.action.showOk();
       } else {
         ev.action.showAlert();
-        streamDeck.logger.error(`setPower failed`, {
-          zone: zone,
-          action: action,
-          response_code,
-        });
+        streamDeck.logger.error(`setMute failed`, { zone, action, response_code });
       }
     } catch (error) {
       ev.action.showAlert();
-      streamDeck.logger.error("setPower error:", error);
+      streamDeck.logger.error("setMute error:", error);
     }
   }
 
   override async onSendToPlugin(
     ev: SendToPluginEvent<JsonValue, MuteActionParams>,
   ): Promise<void> {
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getZones"
-    ) {
-      streamDeck.ui.sendToPropertyInspector({
-        event: "getZones",
-        items: await getZones(),
-      } satisfies ZonePayload);
-    }
+    await handleGetZones(ev.payload);
 
-    if (
-      ev.payload instanceof Object &&
-      "event" in ev.payload &&
-      ev.payload.event === "getMuteActions"
-    ) {
+    if (isEvent(ev.payload, "getMuteActions")) {
       streamDeck.ui.sendToPropertyInspector({
         event: "getMuteActions",
         items: getMuteActions(),
@@ -162,7 +119,7 @@ const getMuteActions = (): MuteActionResult => {
   return actions.map((action) => {
     return {
       label: toPascalCase(action.toString()),
-      value: action,
+      value: action.toString(),
     };
   });
 };

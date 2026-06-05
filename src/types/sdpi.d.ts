@@ -65,5 +65,5 @@ export type InputResult = Item[];
 type Item = {
   disabled?: boolean;
   label: string;
-  value: ZoneId;
+  value: string;
 };
