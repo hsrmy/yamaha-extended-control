@@ -8,12 +8,14 @@
       "Name": "Power",
       "UUID": "xyz.emradc.yamaha-extended-control.power",
       "PropertyInspectorPath": "ui/power.html",
-      "Icon": "imgs/actions/system-power-on/icon",
+      "Icon": "imgs/actions/power",
       "Tooltip": "Sends a power on command to the Yamaha device.",
-      "Controllers": ["Keypad"],
+      "Controllers": [
+        "Keypad"
+      ],
       "States": [
         {
-          "Image": "imgs/actions/system-power-on/key",
+          "Image": "imgs/actions/power",
           "TitleAlignment": "bottom"
         }
       ]
@@ -22,12 +24,14 @@
       "Name": "Volume",
       "UUID": "xyz.emradc.yamaha-extended-control.volume",
       "PropertyInspectorPath": "ui/volume.html",
-      "Icon": "imgs/actions/volume/icon",
+      "Icon": "imgs/actions/volume",
       "Tooltip": "Sends a volume command to the Yamaha device.",
-      "Controllers": ["Keypad"],
+      "Controllers": [
+        "Keypad"
+      ],
       "States": [
         {
-          "Image": "imgs/actions/volume/key",
+          "Image": "imgs/actions/volume",
           "TitleAlignment": "bottom"
         }
       ]
@@ -36,12 +40,14 @@
       "Name": "Mute",
       "UUID": "xyz.emradc.yamaha-extended-control.mute",
       "PropertyInspectorPath": "ui/mute.html",
-      "Icon": "imgs/actions/mute/icon",
+      "Icon": "imgs/actions/mute",
       "Tooltip": "Sends a mute command to the Yamaha device.",
-      "Controllers": ["Keypad"],
+      "Controllers": [
+        "Keypad"
+      ],
       "States": [
         {
-          "Image": "imgs/actions/mute/key",
+          "Image": "imgs/actions/mute",
           "TitleAlignment": "bottom"
         }
       ]
@@ -50,12 +56,14 @@
       "Name": "Input",
       "UUID": "xyz.emradc.yamaha-extended-control.input",
       "PropertyInspectorPath": "ui/input.html",
-      "Icon": "imgs/actions/input/icon",
+      "Icon": "imgs/actions/input",
       "Tooltip": "Sends an input command to the Yamaha device.",
-      "Controllers": ["Keypad"],
+      "Controllers": [
+        "Keypad"
+      ],
       "States": [
         {
-          "Image": "imgs/actions/input/key",
+          "Image": "imgs/actions/input",
           "TitleAlignment": "bottom"
         }
       ]
