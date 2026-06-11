@@ -51,54 +51,18 @@ const config = [
           });
         },
       },
-    ],
-  },
-  {
-    input: "src/ui/global-settings.ts",
-    output: {
-      file: `${sdPlugin}/ui/global-settings.js`,
-      format: "iife",
-      name: "GlobalSettingsPI",
-      sourcemap: isWatching,
-      sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
-        return url.pathToFileURL(
-          path.resolve(path.dirname(sourcemapPath), relativeSourcePath),
-        ).href;
-      },
-    },
-    plugins: [
-      {
-        name: "watch-externals",
-        buildStart: function () {
-          this.addWatchFile(`${sdPlugin}/manifest.json`);
-        },
-      },
-      typescript({
-        target: "ESNext",
-        mapRoot: isWatching ? "./" : undefined,
-        compilerOptions: {
-          lib: ["ESNext", "DOM", "DOM.Iterable"],
-          module: "ESNext",
-          moduleResolution: "bundler",
-          types: [],
-        },
-      }),
-      nodeResolve({
-        browser: true,
-        mainFields: ["browser", "module", "main"],
-      }),
-      commonjs(),
-      !isWatching && terser(),
       {
         name: "copy-html",
         writeBundle() {
-          const src = "src/ui/global-settings.html";
-          const dest = `${sdPlugin}/ui/global-settings.html`;
-          if (fs.existsSync(src)) {
-            if (!fs.existsSync(`${sdPlugin}/ui`))
-              fs.mkdirSync(`${sdPlugin}/ui`, { recursive: true });
-            fs.copyFileSync(src, dest);
-            console.log(`Copied: ${src} -> ${dest}`);
+          if (!fs.existsSync(`${sdPlugin}/ui`))
+            fs.mkdirSync(`${sdPlugin}/ui`, { recursive: true });
+          for (const name of ["power", "volume", "mute", "input"]) {
+            const src = `src/ui/${name}.html`;
+            const dest = `${sdPlugin}/ui/${name}.html`;
+            if (fs.existsSync(src)) {
+              fs.copyFileSync(src, dest);
+              console.log(`Copied: ${src} -> ${dest}`);
+            }
           }
         },
       },
